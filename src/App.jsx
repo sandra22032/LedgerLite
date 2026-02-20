@@ -7,6 +7,7 @@ function App() {
   const [savings, setSavings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isConfigured, setIsConfigured] = useState(true);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
   useEffect(() => {
     const url = import.meta.env.VITE_SUPABASE_URL;
@@ -20,6 +21,15 @@ function App() {
       fetchSavings();
     }
   }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   async function fetchSavings() {
     const { data, error } = await supabase
@@ -146,7 +156,25 @@ function App() {
     <div className="app-container">
       <header>
         <div className="logo-text">LedgerLite</div>
-        <div className="user-profile">
+        <div className="user-profile" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <button
+            className="theme-toggle glass"
+            onClick={toggleTheme}
+            style={{
+              padding: '0.5rem',
+              borderRadius: '0.75rem',
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '40px',
+              height: '40px',
+              fontSize: '1.2rem',
+              color: 'var(--text-main)'
+            }}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
           <span style={{ color: 'var(--text-muted)' }}>Welcome back, User</span>
         </div>
       </header>

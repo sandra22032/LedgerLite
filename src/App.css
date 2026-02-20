@@ -120,7 +120,8 @@
 
 input,
 select {
-  background: rgba(15, 23, 42, 0.5);
+  background: var(--bg);
+  opacity: 0.8;
   border: 1px solid var(--card-border);
   border-radius: 0.75rem;
   padding: 0.75rem;
